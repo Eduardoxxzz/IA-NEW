@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Controle</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+    body { background: #0b0f19; color: #e2e8f0; padding: 20px; }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 20px; margin-bottom: 20px; }
+    h1 { font-size: 24px; color: #3b82f6; }
+    
+    .btn-group { display: flex; gap: 10px; }
+    .btn { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold;}
+    .btn:hover { background: #2563eb; }
+    .btn-verde { background: #10b981; }
+    .btn-verde:hover { background: #059669; }
+    
+    .card { background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; margin-bottom: 20px; }
+    .numero { font-size: 48px; font-weight: bold; color: #10b981; }
+    table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 12px; overflow: hidden; }
+    th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #334155; }
+    th { background: #0f172a; color: #94a3b8; font-size: 14px; }
+    td { font-size: 14px; }
+    .online { color: #10b981; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>📊 Painel de Controle</h1>
+    <div class="btn-group">
+      <!-- 🌟 BOTÃO DE ATUALIZAR -->
+      <button class="btn btn-verde" id="btn-atualizar">🔄 Atualizar Agora</button>
+      <a href="/" class="btn">Ir para o Chat</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Usuários Online Agora:</h2>
+    <div class="numero" id="total">0</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>IP</th>
+        <th>Estado (Localização)</th>
+        <th>Dispositivo / Navegador</th>
+        <th>Última Atividade</th>
+      </tr>
+    </thead>
+    <tbody id="lista-usuarios">
+      <tr><td colspan="4">Carregando...</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    async function buscarDados() {
+      const tbody = document.getElementById('lista-usuarios');
+      // Muda o botão para indicar que está carregando
+      const btn = document.getElementById('btn-atualizar');
+      btn.textContent = '⏳ Buscando...';
+      
+      try {
+        const resposta = await fetch('/api/estatisticas');
+        const dados = await resposta.json();
+        
+        document.getElementById('total').textContent = dados.totalAtivos;
+        tbody.innerHTML = '';
+
+        if (dados.usuarios.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4">Nenhum usuário ativo no momento.</td></tr>';
+          return;
+        }
+
+        dados.usuarios.forEach(u => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${u.ip}</td>
+            <td class="online">${u.estado}</td>
+            <td>${u.dispositivo}</td>
+            <td>${u.ultimoSinal}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (e) {
+        console.error('Erro ao buscar dados', e);
+        tbody.innerHTML = '<tr><td colspan="4">Erro ao carregar dados.</td></tr>';
+      } finally {
+        btn.textContent = '🔄 Atualizar Agora';
+      }
+    }
+
+    // Evento do botão de atualizar manual
+    document.getElementById('btn-atualizar').addEventListener('click', buscarDados);
+
+    // Busca ao abrir a página e atualiza sozinho a cada 5 segundos
+    buscarDados();
+    setInterval(buscarDados, 5000);
+  </script>
+</body>
+</html>

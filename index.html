@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Chat IA Premium</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='none' stroke='black' stroke-width='8'/><ellipse cx='50' cy='50' rx='20' ry='45' fill='none' stroke='black' stroke-width='8'/><line x1='5' y1='50' x2='95' y2='50' stroke='black' stroke-width='8'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="header-content">
+        <div class="avatar ia-avatar" style="background: white; padding: 4px;">
+          <svg viewBox="0 0 100 100" width="24" height="24">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#0f172a" stroke-width="8"/>
+            <ellipse cx="50" cy="50" rx="20" ry="45" fill="none" stroke="#0f172a" stroke-width="8"/>
+            <line x1="5" y1="50" x2="95" y2="50" stroke="#0f172a" stroke-width="8"/>
+          </svg>
+        </div>
+        <div>
+          <h1>IA Global</h1>
+          <span class="status"><span class="dot"></span> Online</span>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <select id="modo-ia" title="Escolha o modelo">
+          <option value="padrao">🧠 Chat Padrão</option>
+          <option value="pro">💻 Modo Dev (Pro)</option>
+        </select>
+        <button id="limpar" title="Limpar conversa">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <div id="mensagens">
+      <div class="mensagem ia">
+        <div class="avatar">🤖</div>
+        <div class="balao">Olá! Sou sua IA. Mude o seletor no topo para <b>Modo Dev</b> se quiser que eu analise e corrija códigos!</div>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <!-- 🌟 PREVIEW CORRIGIDO (Separação de Imagem e Arquivo de Texto) -->
+      <div id="preview-container" style="display: none;">
+        <img id="img-preview" src="" alt="Preview" style="display: none;">
+        <div id="file-preview" style="display: none;">
+          📄 <span id="file-name"></span>
+        </div>
+        <button type="button" id="remover-arquivo">✕</button>
+      </div>
+
+      <form id="form">
+        <button type="button" id="btn-arquivo" title="Anexar arquivo ou imagem">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+        </button>
+        <input type="file" id="arquivo" style="display: none;">
+        
+        <textarea id="input" placeholder="Digite sua mensagem..." rows="1"></textarea>
+        <button type="submit" id="enviar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
